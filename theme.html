@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FinFlow — Fintech Dashboard (Capstone Theme 3)</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+ 
+
+  :root{
+    --bg: #0f1724;
+    --panel: #0b1220;
+    --muted: #94a3b8;
+    --accent: #06b6d4; 
+    --accent-2: #7c3aed; 
+    --success: #10b981;
+    --danger: #ef4444;
+    --card-radius: 12px;
+    --gap: 1rem;
+    --max-width: 1300px;
+    font-size: 16px;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Inter",system-ui,-apple-system,Segoe UI, Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,#071025 0%, #081126 100%);
+    color: #e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+
+  
+  .wrap{
+    width:clamp(92%, 92%, var(--max-width));
+    margin:2rem auto;
+  }
+
+
+  header.topbar{
+    display:flex;
+    gap:var(--gap);
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:1.25rem;
+  }
+  .brand{
+    display:flex;
+    gap:0.75rem;
+    align-items:center;
+  }
+  .logo{
+    width:48px; height:48px; border-radius:10px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid; place-items:center; font-weight:700; color:white;
+    box-shadow: 0 8px 30px rgba(124,58,237,0.12);
+  }
+  .brand h1{ font-size:1.1rem; margin:0; letter-spacing:0.2px; }
+  .brand p{ margin:0; font-size:0.85rem; color:var(--muted); }
+
+
+  .controls{
+    display:flex; gap:0.75rem; align-items:center;
+  }
+  .search {
+    display:flex; align-items:center; gap:0.5rem;
+    background: rgba(255,255,255,0.03);
+    padding:0.4rem 0.6rem; border-radius:10px;
+  }
+  .search input{
+    background:transparent; border:0; outline:none; color:inherit; min-width:180px;
+  }
+  .filter, .btn {
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    border:0; color:white; padding:0.55rem 0.8rem; border-radius:10px; font-weight:600;
+    cursor:pointer;
+  }
+  .filter.secondary{
+    background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted);
+  }
+
+  
+  .grid{
+    display:grid;
+    gap:calc(var(--gap) * 1.1);
+    grid-template-columns: 320px 1fr;
+  }
+
+ 
+  aside.sidebar{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:1rem;
+    border-radius:var(--card-radius);
+    min-height:420px;
+  }
+  .nav-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem; }
+  .nav-list a{
+    display:flex; gap:0.6rem; align-items:center; padding:0.7rem; border-radius:8px; text-decoration:none; color:var(--muted);
+  }
+  .nav-list a:hover{ background: rgba(255,255,255,0.02); color:var(--accent); transform:translateX(4px); }
+
+  .account-card{
+    background:linear-gradient(90deg, rgba(6,182,212,0.08), rgba(124,58,237,0.06));
+    padding:0.8rem; border-radius:10px; margin-bottom:0.9rem;
+  }
+  .balance{ font-size:1.4rem; font-weight:700; margin-top:0.4rem; }
+
+ 
+  main.content{
+    display:flex; flex-direction:column; gap:var(--gap);
+  }
+
+ 
+  .stats{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:0.9rem;
+  }
+  .stat{
+    background: rgba(255,255,255,0.02);
+    padding:0.9rem; border-radius:10px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .stat .meta{ color:var(--muted); font-size:0.85rem; }
+  .stat .value{ font-size:1.25rem; font-weight:700; }
+
+  
+  .mid{
+    display:grid;
+    gap:0.9rem;
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:1rem; border-radius:12px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.35);
+  }
+
+  
+  .chart{
+    height:260px; display:flex; align-items:center; justify-content:center;
+  }
+  .sparkline{
+    width:100%; height:220px;
+  }
+
+  
+  .transactions{
+    display:flex; flex-direction:column; gap:0.6rem; max-height:260px; overflow:auto;
+  }
+  .txn{
+    display:flex; justify-content:space-between; gap:0.5rem; padding:0.6rem; border-radius:8px;
+    align-items:center;
+  }
+  .txn:hover{ background: rgba(255,255,255,0.02); transform:translateY(-3px); }
+  .txn .left{ display:flex; gap:0.6rem; align-items:center; }
+  .txn .icon{ width:44px; height:44px; border-radius:8px; display:grid; place-items:center; font-weight:700; color:#0b1220; }
+  .txn .details{ font-size:0.9rem; color:var(--muted); }
+  .txn .amount{ font-weight:700; }
+
+  .row{
+    display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center;
+  }
+
+  
+  .plans{
+    display:grid; gap:0.8rem; grid-template-columns: repeat(3,1fr); margin-top:0.4rem;
+  }
+  .plan{ padding:1rem; border-radius:10px; text-align:center; }
+  .plan.primary{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; }
+  .plan .price{ font-size:1.3rem; font-weight:800; margin:0.6rem 0; }
+
+
+  .summary{ display:flex; gap:0.6rem; justify-content:space-between; align-items:center; padding-top:0.6rem; color:var(--muted); font-size:0.9rem; }
+
+  
+  .muted{ color:var(--muted); font-size:0.9rem; }
+  .chip{ background: rgba(255,255,255,0.03); padding:0.25rem 0.5rem; border-radius:999px; font-weight:600; font-size:0.85rem; }
+
+  
+  @keyframes slideUp {
+    from { opacity:0; transform: translateY(8px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+  .card, .stat, .txn, .plan { animation: slideUp 400ms ease both; }
+
+  
+  @media (max-width: 980px){
+    .grid{ grid-template-columns: 1fr; }
+    .stats{ grid-template-columns: repeat(2, 1fr); }
+    .mid{ grid-template-columns: 1fr; }
+    .plans{ grid-template-columns: repeat(2,1fr); }
+  }
+
+  @media (max-width: 560px){
+    .stats{ grid-template-columns: 1fr; }
+    .plans{ grid-template-columns: 1fr; }
+    .brand h1{ font-size:1rem; }
+    .search input{ min-width:80px; }
+  }
+
+  
+  .transactions::-webkit-scrollbar{ width:8px; }
+  .transactions::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.04); border-radius:8px; }
+
+</style>
+</head>
+<body>
+  <div class="wrap" role="application" aria-label="FinFlow dashboard">
+
+ 
+    <header class="topbar">
+      <div class="brand" aria-hidden="false">
+        <div class="logo">FF</div>
+        <div>
+          <h1>FinFlow</h1>
+          <p class="muted">Smart finances, clear view</p>
+        </div>
+      </div>
+
+      <div class="controls" role="group" aria-label="Top controls">
+        <div class="search" role="search" aria-label="Search transactions">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Search txn, merchant..." aria-label="Search" />
+        </div>
+
+        <button class="filter secondary" aria-label="Filter">Filters</button>
+        <button class="btn" aria-label="New payment">New Payment</button>
+      </div>
+    </header>
+
+   
+    <div class="grid">
+
+   
+      <aside class="sidebar" aria-label="Main navigation">
+        <div class="account-card">
+          <div class="muted">Account Balance</div>
+          <div class="balance">₹ 62,480.00</div>
+          <div class="muted">Available: ₹ 58,920.00</div>
+        </div>
+
+        <nav>
+          <ul class="nav-list" aria-label="Primary">
+            <li><a href="#dashboard">📊 Dashboard</a></li>
+            <li><a href="#transactions">💸 Transactions</a></li>
+            <li><a href="#analytics">📈 Analytics</a></li>
+            <li><a href="#cards">💳 Cards</a></li>
+            <li><a href="#settings">⚙️ Settings</a></li>
+          </ul>
+        </nav>
+
+        <div style="height:12px"></div>
+
+        <div class="card" role="region" aria-label="Quick actions">
+          <div class="muted" style="margin-bottom:0.5rem">Quick Actions</div>
+          <div class="row" style="gap:0.5rem">
+            <button class="filter" style="flex:1">Send</button>
+            <button class="filter secondary" style="flex:1">Request</button>
+          </div>
+        </div>
+
+        <div style="height:0.75rem"></div>
+
+        <div class="card" role="region" aria-label="Budget">
+          <div class="muted">Monthly Budget</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.6rem">
+            <div>
+              <div class="muted">Spent</div>
+              <div class="balance" style="font-size:1rem">₹ 24,350</div>
+            </div>
+            <div class="chip">45% used</div>
+          </div>
+        </div>
+      </aside>
+
+   
+      <main class="content" id="dashboard">
+
+       
+        <section class="stats" aria-label="Summary statistics">
+          <div class="stat card">
+            <div>
+              <div class="meta">Income (30d)</div>
+              <div class="value">₹ 1,24,500</div>
+            </div>
+            <div class="muted">+12%</div>
+          </div>
+
+          <div class="stat card">
+            <div>
+              <div class="meta">Expenses (30d)</div>
+              <div class="value">₹ 48,200</div>
+            </div>
+            <div class="muted">-4%</div>
+          </div>
+
+          <div class="stat card">
+            <div>
+              <div class="meta">Net Worth</div>
+              <div class="value">₹ 5,80,400</div>
+            </div>
+            <div class="muted">tracked</div>
+          </div>
+        </section>
+
+       
+        <section class="mid">
+          
+          <div class="card" aria-label="Spending chart">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem">
+              <div>
+                <div class="muted">Spending Overview</div>
+                <div style="font-weight:700; font-size:1.05rem">Last 30 days</div>
+              </div>
+              <div class="muted">Compare ⇅</div>
+            </div>
+
+            <div class="chart" role="img" aria-label="Spending chart illustration">
+            
+              <svg class="sparkline" viewBox="0 0 600 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#7c3aed" stop-opacity="0.9"/>
+                    <stop offset="1" stop-color="#06b6d4" stop-opacity="0.2"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0 160 L50 120 L100 140 L150 90 L200 110 L250 80 L300 100 L350 60 L400 90 L450 70 L500 120 L550 100 L600 80" fill="none" stroke="url(#g)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="600" cy="80" r="4" fill="#7c3aed"/>
+              </svg>
+            </div>
+
+            <div class="summary">
+              <div class="muted">Top category: <strong>Shopping</strong></div>
+              <div class="muted">Avg daily: <strong>₹ 1,610</strong></div>
+            </div>
+          </div>
+
+        
+          <aside class="card" aria-label="Recent transactions">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem">
+              <div>
+                <div class="muted">Recent Transactions</div>
+                <div style="font-weight:700">12 items</div>
+              </div>
+
+              <form class="row" role="search" aria-label="Filter transactions">
+                <select aria-label="Filter by type" style="padding:0.45rem; border-radius:8px; background:transparent; color:inherit; border:1px solid rgba(255,255,255,0.03)">
+                  <option value="all">All</option>
+                  <option value="credit">Credit</option>
+                  <option value="debit">Debit</option>
+                </select>
+                <button class="filter secondary" aria-label="Apply filter">Apply</button>
+              </form>
+            </div>
+
+            <div class="transactions" aria-live="polite">
+           
+              <div class="txn">
+                <div class="left">
+                  <div class="icon" style="background:linear-gradient(90deg,#ffd54a,#ff9a00)">AM</div>
+                  <div class="details">
+                    <div style="font-weight:700">Amazon</div>
+                    <div class="muted">Shopping • 2 hrs ago</div>
+                  </div>
+                </div>
+                <div class="amount muted">- ₹ 1,249</div>
+              </div>
+
+              <div class="txn">
+                <div class="left">
+                  <div class="icon" style="background:linear-gradient(90deg,#4ade80,#06b6d4)">UP</div>
+                  <div class="details">
+                    <div style="font-weight:700">Salary</div>
+                    <div class="muted">Credit • 3 days ago</div>
+                  </div>
+                </div>
+                <div class="amount" style="color:var(--success)">+ ₹ 45,000</div>
+              </div>
+
+              <div class="txn">
+                <div class="left">
+                  <div class="icon" style="background:linear-gradient(90deg,#ff7ab6,#ffb86b)">SW</div>
+                  <div class="details">
+                    <div style="font-weight:700">Swiggy</div>
+                    <div class="muted">Food • 1 day ago</div>
+                  </div>
+                </div>
+                <div class="amount muted">- ₹ 420</div>
+              </div>
+
+              <div class="txn">
+                <div class="left">
+                  <div class="icon" style="background:linear-gradient(90deg,#7c3aed,#06b6d4)">IR</div>
+                  <div class="details">
+                    <div style="font-weight:700">Investment</div>
+                    <div class="muted">Mutual Funds • 4 days ago</div>
+                  </div>
+                </div>
+                <div class="amount" style="color:var(--muted)">- ₹ 5,000</div>
+              </div>
+
+              <div class="txn">
+                <div class="left">
+                  <div class="icon" style="background:linear-gradient(90deg,#60a5fa,#a78bfa)">PK</div>
+                  <div class="details">
+                    <div style="font-weight:700">Paytm</div>
+                    <div class="muted">Bill • 5 days ago</div>
+                  </div>
+                </div>
+                <div class="amount muted">- ₹ 950</div>
+              </div>
+
+            </div>
+          </aside>
+        </section>
+
+       
+        <section class="card" aria-label="Subscription plans">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem">
+            <div>
+              <div class="muted">Subscription</div>
+              <div style="font-weight:700">Choose a plan</div>
+            </div>
+            <div class="muted">Billed monthly</div>
+          </div>
+
+          <div class="plans" role="list">
+            <div class="plan card" role="listitem">
+              <div class="muted">Starter</div>
+              <div class="price">₹ 299</div>
+              <div class="muted">Basic analytics</div>
+              <div style="margin-top:0.8rem"><button class="filter secondary">Choose</button></div>
+            </div>
+
+            <div class="plan card primary" role="listitem" aria-current="true">
+              <div>Pro</div>
+              <div class="price">₹ 899</div>
+              <div class="muted">Full analytics + exports</div>
+              <div style="margin-top:0.8rem"><button class="btn">Get Pro</button></div>
+            </div>
+
+            <div class="plan card" role="listitem">
+              <div class="muted">Enterprise</div>
+              <div class="price">Contact</div>
+              <div class="muted">Custom integrations</div>
+              <div style="margin-top:0.8rem"><button class="filter secondary">Contact Sales</button></div>
+            </div>
+          </div>
+        </section>
+
+       
+        <section class="card" aria-label="Activity summary">
+          <div style="display:flex; justify-content:space-between; gap:0.8rem; flex-wrap:wrap">
+            <div>
+              <div class="muted">Pending invoices</div>
+              <div style="font-weight:700">3</div>
+            </div>
+            <div>
+              <div class="muted">Open disputes</div>
+              <div style="font-weight:700">0</div>
+            </div>
+            <div>
+              <div class="muted">Connected banks</div>
+              <div style="font-weight:700">2</div>
+            </div>
+            <div style="margin-left:auto" class="muted">Last sync: today</div>
+          </div>
+        </section>
+
+      </main>
+    </div> 
+  </div> 
+</body>
+</html>
