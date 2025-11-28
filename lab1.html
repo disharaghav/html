@@ -1,0 +1,156 @@
+<!--
+Web Dev I – Lab 1
+Personal Portfolio Website
+Author: Disha
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disha Portfolio</title>
+</head>
+
+<body>
+
+    
+    <a href="#main-content" style="position:absolute;left:-999px;top:-999px;">Skip to main content</a>
+
+    
+    <header>
+        <h1>Disha's Portfolio</h1>
+
+        
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <main id="main-content">
+
+        
+        <section id="hero">
+            <h2>Welcome to My Portfolio</h2>
+            <p>Hello! I’m Disha — a student who loves learning new things and creating cool projects.</p>
+        </section>
+
+       
+        <section id="about">
+            <h2>About Me</h2>
+
+            <img src="disha phto.jpg" alt="Profile picture of Disha" width="200">
+
+            <p>
+                I am a passionate learner interested in technology, creativity, and building useful digital things.
+                I enjoy exploring HTML, CSS, JavaScript, and problem-solving in general.
+            </p>
+        </section>
+
+       
+        <section id="projects">
+            <h2>Projects</h2>
+
+            <article>
+                <h3>Mini Library System</h3>
+                <p>A Python-based console app to add, search, remove, and display books.</p>
+            </article>
+
+            <article>
+                <h3>JS Quiz Game</h3>
+                <p>A JavaScript quiz using prompt(), alert(), and score tracking.</p>
+            </article>
+
+            <article>
+                <h3>Portfolio Website</h3>
+                <p>A simple portfolio made using semantic HTML (this project!).</p>
+            </article>
+        </section>
+
+       
+        <section id="skills">
+            <h2>Technical Skills</h2>
+
+            <table border="1" cellpadding="8">
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>HTML</td>
+                        <td>Intermediate</td>
+                    </tr>
+
+                    <tr>
+                        <td>CSS</td>
+                        <td>Beginner</td>
+                    </tr>
+
+                    <tr>
+                        <td>JavaScript</td>
+                        <td>Beginner</td>
+                    </tr>
+
+                    <tr>
+                        <td>Python</td>
+                        <td>Intermediate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        
+        <section id="contact">
+            <h2>Contact Me</h2>
+
+            <form>
+                <label for="name">Name:</label><br>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Enter your name" 
+                    required
+                ><br><br>
+
+                <label for="email">Email:</label><br>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter your email" 
+                    required
+                ><br><br>
+
+                <label for="message">Message:</label><br>
+                <textarea 
+                    id="message" 
+                    name="message" 
+                    placeholder="Write your message..." 
+                    required
+                ></textarea><br><br>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>© 2025 Disha — All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
